@@ -13,8 +13,6 @@
 
 using namespace std;
 
-const int COLUMNS = 4;
-
 void removeVowels(string &text) {
 
 	char chars[] = "aeiou";
@@ -23,7 +21,7 @@ void removeVowels(string &text) {
 		text.erase( remove( text.begin(), text.end(), chars[i] ), text.end() );
 	}
 
-	cout << text << endl;
+	cout << text;
 }
 
 int main() {
