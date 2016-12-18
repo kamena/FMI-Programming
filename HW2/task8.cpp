@@ -1,5 +1,5 @@
 /**
- * Task 6:
+ * Task 8:
  *
  * Да се напише ф-ция, която по даден масив от цели числа (и неговия размер) 
  * и цяло число, търси(по възможност двоично) числото в масива и ако го намери, 
@@ -33,7 +33,7 @@ int* removeN(int *arr, int size, int n) {
 		} else if ( arr[middle_num] == n ) {
 			return &arr[middle_num];
 		}
-		
+
 	}
 
 	return NULL;
