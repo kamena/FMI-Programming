@@ -25,8 +25,6 @@ int checkTheLast(float *arr, int size) {
 		}
 	}
 
-
-
 	return theLast;
 }
 
