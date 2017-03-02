@@ -1,0 +1,25 @@
+getMax a b = if a > b then a else b
+
+fib 0 = 1
+fib 1 = 1
+fib x = fib(x - 1) + fib(x - 2)
+
+--GCD
+mygcd a 0 = a
+mygcd a b = mygcd b (mod a b)
+
+-- Is prime number
+
+-- Heron formula
+
+area :: Triple -> Double
+
+area (ia, ib, ic) = sqrt (s * (s - a) * (s - b) * (s - c))
+ where (a, b, c) = (fromInteger ia, fromInteger ib, fromInteger ic) 
+  let 
+   s = (a + b + c) / 2
+
+sqrt :: Double -> Double
+
+
+
