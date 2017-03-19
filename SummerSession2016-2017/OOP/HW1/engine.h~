@@ -1,0 +1,10 @@
+#pragma once
+
+class Tank {
+public:
+	int capacity_;
+
+	Tank();
+	Tank(int capacity_);
+	~Tank();
+};
