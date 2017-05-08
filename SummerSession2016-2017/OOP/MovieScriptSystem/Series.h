@@ -2,12 +2,18 @@
 
 class Series {
 private:
-	string seriesName_;
+	char* seriesName_;
+
+	void copySeries(const Series& other);
 public:
 	Series();
-	Series(string name);
+	Series(const char* name);
+	Series(const Series& other);
+	~Series();
 
-	string getSeriesName();
-	void setSeriesName(string name);
+	Series& operator=(const Series& other);
+
+	char* getSeriesName();
+	void setSeriesName(const char* name);
 
 };

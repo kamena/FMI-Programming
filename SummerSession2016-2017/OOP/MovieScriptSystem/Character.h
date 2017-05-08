@@ -2,22 +2,27 @@
 
 class Character : public Episode {
 private:
-	string name_;
+	char* name_;
 	int age_;
-	string gander_;
+	char* gander_;
 	// Emotions emotions_;
+
+	void copyCharacter(const Character& other);
 public:
 	Character();
-	Character(string name, int age, string gander, Episode& episodes);
+	Character(const char* name, int age, const char* gander, Episode& episodes);
+	Character(const Character& other);
+	~Character();
 
-	string getName();
+	Character& operator=(const Character& other);
+
+	char* getName();
 	int getAge();
 	// Emotions& getEmotions(Character& emotionsTo);
-	string getGander();
+	char* getGander();
 
-
-	void setName(string name);
+	void setName(const char* name);
 	void setAge(int age);
-	void setGander(string gander);
+	void setGander(const char* gander);
 	// void setEmotion(Emotions& emotions);
 };

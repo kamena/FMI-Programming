@@ -7,9 +7,15 @@ private:
 	Character between1_;
 	Character between2_;
 	ActionType type_;
+
+	void copyAction(const Action& other);
 public:
 	Action();
 	Action(Character& between1, Character& between2, ActionType type, Episode& episode);
+	Action(const Action& other);
+	~Action();
+
+	Action& operator=(const Action& other);
 
 	ActionType getActionType();
 	Character& getBetween1();

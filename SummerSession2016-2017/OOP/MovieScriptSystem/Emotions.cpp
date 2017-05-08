@@ -1,6 +1,13 @@
 #include "Character.h"
 #include "Emotions.h"
 
+void Emotions::copyEmotions(const Emotions& other){
+	this->emotionsTo_ = other.emotionsTo_;
+	this->hate_ = other.hate_;
+	this->like_ = other.like_;
+	this->isGood_ = other.isGood_;
+}
+
 Emotions::Emotions() {
 	hate_ = 0;
 	like_ = 0;
@@ -9,13 +16,21 @@ Emotions::Emotions() {
 
 Emotions::Emotions(Character& emotionsFrom, Character& emotionsTo, int hate, int like, bool isGood)
 : Character(emotionsFrom), emotionsTo_(emotionsTo), hate_(hate), like_(like), isGood_(isGood) 
-{
-	emotionsFrom_ = emotionsFrom;
+{}
+
+Emotions::Emotions(const Emotions& other) : Character(other){
+	copyEmotions(other);
+}
+Emotions::~Emotions(){}
+
+Emotions& Emotions::operator=(const Emotions& other){
+	if(this == &other) return *this;
+	Character::operator=(other);
+	copyEmotions(other);
+
+	return *this;
 }
 
-Character& Emotions::getEmotionsFrom(){
-	return emotionsFrom_;
-}
 Character& Emotions::getEmotionsTo(){
 	return emotionsTo_;
 }

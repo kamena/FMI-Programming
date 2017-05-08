@@ -14,39 +14,41 @@ int main()
 {
 	Series series("Game of Thrones");
 	Episode episode(1, "Game of Thrones");
-	cout << episode.getSeriesName() << endl;
+	cout << "1 - series name get by episode: \t" << episode.getSeriesName() << endl;
 
 	// vector<Character> CharactersVector;
 
 	Character me("Kamena", 18, "female", episode);
     // CharactersVector.push_back( me );
 
-    cout << me.getSeriesName() << endl;
+    cout << "2 - Series name get by character: \t" << me.getSeriesName() << endl;
 
     Character him("Hristo", 19, "male", episode);
 
     Action action(me, him, RELATIONSHIP, episode);
 
-    cout << action.getSeriesName() << endl;
+    cout << "3 - series name get by action: \t\t" << action.getSeriesName() << endl;
 
     Emotions emotions(me, him, 0, 99, true);
 
-    cout << emotions.getSeriesName() << endl;
+    cout << "4 - series name get by emotions: \t" << emotions.getSeriesName() << endl;
 
-    cout << emotions.getHate() << endl;
+    cout << "4.1 - episode num get by emotions: \t" << emotions.getEpisodeNum() << endl;
+
+    cout << "5 - hate level get by emotions:\t\t" << emotions.getHate() << endl;
 
     Emotions emotions1(him, me, 5, 98, true);
-    cout << emotions1.getHate() << endl;
+    cout << "6 - hate level get be emotions1: \t" << emotions1.getHate() << endl;
 
-    cout << emotions.getEmotionsFrom().getName() << " likes " << emotions.getEmotionsTo().getName() << " " << emotions.getLike() << " times." << endl;
+    cout << "7: " << emotions.getName() << " likes " << emotions.getEmotionsTo().getName() << " " << emotions.getLike() << " times." << endl;
 
     Action action1(me, him, ARGUE, episode);
 
     Emotions emotions2(me, him, 5, 98, true);
 
-    cout << action1.getBetween1().getName() << " is arguing with " << action1.getBetween2().getName() << "." << endl;
+    cout << "8: " << action1.getBetween1().getName() << " is arguing with " << action1.getBetween2().getName() << "." << endl;
 
-    cout << emotions2.getEmotionsFrom().getName() << " likes " << emotions2.getEmotionsTo().getName() << " " << emotions2.getLike() << " times." << endl;
+    cout << "9: " << emotions2.getName() << " likes " << emotions2.getEmotionsTo().getName() << " " << emotions2.getLike() << " times." << endl;
 
 
     // CharactersVector.push_back( him );

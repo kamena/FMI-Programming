@@ -1,11 +1,30 @@
 #include "Action.h"
 
+void Action::copyAction(const Action& other){
+	this->between1_ = other.between1_;
+	this->between2_ = other.between2_;
+	this->type_ = other.type_;
+}
+
 Action::Action(){
 	this->type_ = RELATIONSHIP;
 }
 
 Action::Action(Character& between1, Character& between2, ActionType type, Episode& episode)
 : between1_(between1), between2_(between2), type_(type), Episode(episode) {}
+
+Action::Action(const Action& other) : Episode(other) {
+	copyAction(other);
+}
+Action::~Action(){}
+
+Action& Action::operator=(const Action& other){
+	if(this == &other) return *this;
+	Episode::operator=(other);
+	copyAction(other);
+
+	return *this;
+}
 
 ActionType Action::getActionType(){
 	return this->type_;
