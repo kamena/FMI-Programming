@@ -1,0 +1,9 @@
+#pragma once
+
+enum PositionType
+{
+	FRONTEND,
+	BACKEND,
+	MARKETING,
+	OTHER
+};
