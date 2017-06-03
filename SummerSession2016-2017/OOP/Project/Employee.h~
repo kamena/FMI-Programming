@@ -1,0 +1,29 @@
+#pragma once
+
+class Employee {
+private:
+	char* name_;
+	char* address_;
+	int egn_;
+	char* department_;
+	int salary_;
+
+	void copyEmployee(const Employee& other);
+public:
+	Employee();
+	Employee(const char* name, const char* address, int egn, const char* department, int salary);
+	Employee(const Employee& other);
+	~Employee();
+
+	Character& operator=(const Character& other);
+
+	char* getName();
+	int getAge();
+	// Emotions& getEmotions(Character& emotionsTo);
+	char* getGander();
+
+	void setName(const char* name);
+	void setAge(int age);
+	void setGander(const char* gander);
+	// void setEmotion(Emotions& emotions);
+};
