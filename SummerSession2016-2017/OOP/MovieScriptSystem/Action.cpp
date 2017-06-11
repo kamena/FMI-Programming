@@ -1,4 +1,5 @@
 #include "Action.h"
+#include "Episode.h"
 
 void Action::copyAction(const Action& other){
 	this->between1_ = other.between1_;
@@ -6,7 +7,7 @@ void Action::copyAction(const Action& other){
 	this->type_ = other.type_;
 }
 
-Action::Action(){
+Action::Action() : Episode() {
 	this->type_ = RELATIONSHIP;
 }
 

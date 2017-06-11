@@ -1,4 +1,6 @@
 #include "Character.h"
+#include "Episode.h"
+#include <cstring>
 
 void Character::copyCharacter(const Character& other){
 	this->name_ = new char[strlen(other.name_) + 1];
@@ -16,8 +18,8 @@ Character::Character() {
 	gander_ = NULL;
 }
 
-Character::Character(const char* name, int age, const char* gander, Episode& episode)
-: age_(age), Episode(episode)
+Character::Character(const char* name, int age, const char* gander, Episode* episode)
+: age_(age), Episode(*episode)
 {
 	this->name_ = new char[strlen(name) + 1];
 	strcpy(this->name_, name);
@@ -71,3 +73,7 @@ void Character::setGander(const char* gander){
 // void setEmotion(Emotions& emotions){
 // 	emotions_ = emotions;
 // }
+
+void Character::printCharacter(){
+	cout << this->name_;
+}

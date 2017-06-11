@@ -1,4 +1,5 @@
 #pragma once
+#include "Episode.h"
 
 class Character : public Episode {
 private:
@@ -10,7 +11,7 @@ private:
 	void copyCharacter(const Character& other);
 public:
 	Character();
-	Character(const char* name, int age, const char* gander, Episode& episodes);
+	Character(const char* name, int age, const char* gander, Episode* episodes);
 	Character(const Character& other);
 	~Character();
 
@@ -25,4 +26,6 @@ public:
 	void setAge(int age);
 	void setGander(const char* gander);
 	// void setEmotion(Emotions& emotions);
+
+	void printCharacter();
 };

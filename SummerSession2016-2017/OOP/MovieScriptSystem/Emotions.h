@@ -1,4 +1,5 @@
 #pragma once
+#include "Character.h"
 
 class Emotions : public Character {
 private:

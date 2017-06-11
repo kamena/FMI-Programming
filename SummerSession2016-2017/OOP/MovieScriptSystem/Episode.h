@@ -1,4 +1,5 @@
 #pragma once
+#include "Series.h"
 
 class Episode : public Series {
 private:
@@ -7,7 +8,7 @@ private:
 	void copyEpisode(const Episode& other);
 public:
 	Episode();
-	Episode(int episodeNum, const char* seriesName);
+	Episode(int episodeNum, Series& series);
 	Episode(const Episode& other);
 	~Episode();
 

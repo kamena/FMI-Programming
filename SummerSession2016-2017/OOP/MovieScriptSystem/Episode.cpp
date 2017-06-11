@@ -5,12 +5,12 @@ void Episode::copyEpisode(const Episode& other){
 	this->episodeNum_ = other.episodeNum_;
 }
 
-Episode::Episode(){
+Episode::Episode() : Series() {
 	this->episodeNum_ = 0;
 }
 
-Episode::Episode(int episodeNum, const char* seriesName) 
-: episodeNum_(episodeNum), Series(seriesName)
+Episode::Episode(int episodeNum, Series& series) 
+: episodeNum_(episodeNum), Series(series)
 {}
 
 Episode::Episode(const Episode& other) : Series(other) {

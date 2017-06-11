@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ActionType.h"
+#include "Character.h"
+#include "Episode.h"
 
 class Action : public Episode {
 private:
