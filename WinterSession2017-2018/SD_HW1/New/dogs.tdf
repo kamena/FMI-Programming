@@ -1,0 +1,8 @@
+; Golden retriever thumbnail
+dogs.bmp (0, 0, 100, 100) retriever.bmp ; Hi
+; German shepherd thumbnail
+d\;o\;g\;sBlah\;bl\;ah.bmp (100, 0, 100, 200) shepherd.bmp
+; Chihuahua thumbnail
+dogs.bmp (200, 50, 100, 50) chihuahua.bmp
+; Other dog thumbnail
+dogs.bmp (100, 0, 100, 100) other.bmp
