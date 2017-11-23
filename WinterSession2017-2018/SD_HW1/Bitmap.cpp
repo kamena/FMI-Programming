@@ -1,128 +1,160 @@
+#include <iostream>
 #include "Bitmap.h"
 
-Bitmap::Bitmap() {
-    
-}
+Bitmap::Bitmap() :file_(NULL), pixels_(NULL), buffer_(NULL) {}
 
-Bitmap::Bitmap(char* fileName) {
-    
-    this->ifsBmp_.open(fileName, std::ios::binary);
-
-    if(!ifsBmp_) std::cerr << "Error: Fail to open file. " << std::endl;
-
-    signature_ = new BmpSignature;
-    header_ = new BmpHeader;
-    info_ = new BmpInfoHeader;
-
-    readFile();
+Bitmap::Bitmap(const char* fname) 
+:file_(fname), pixels_(NULL), buffer_(NULL) 
+{
+    if(!file_) {
+        std::cerr << "Error: cannot open file " << fname <<  std::endl;
+        return;
+    } 
+    read();
 }
 
 Bitmap::~Bitmap() {
-    //deallocate the array
-    for(int i = 0; i < getHeight(); i++)
-        delete [] pix_[i];
-    delete [] pix_;
-
-    delete signature_;
-    delete header_;
-    delete info_;
-
-    ifsBmp_.close();
+    delete [] buffer_;
+    buffer_ = NULL;
+    
+    delete [] pixels_;
+    pixels_ = NULL;
 }
 
-const int Bitmap::getHeight() const {
-    return this->info_->biWidth;
-}
+void Bitmap::read() {
+    // Read header
+    file_.seekg(0, std::ios::beg);
 
-const int Bitmap::getWidth() const {
-    return this->info_->biHeight;
-}
+    file_.read((char*) &signature_,	 sizeof(signature_));
+    file_.read((char*) &header_, 	 sizeof(header_));
+    file_.read((char*) &info_, 	 	 sizeof(info_));
+    if(!file_) {
+        std::cerr << "Something went wrong" << std::endl;
+        return;
+    }
 
-void Bitmap::resize(int newWidth, int newHeight) {
-    this->info_->biWidth = newWidth;
-    this->info_->biHeight = newHeight;
-}
+    // printHeader();
 
+    bufferLength_ = header_.dataOffset - file_.tellg(); 
+
+    buffer_ = new char[bufferLength_];
+
+    // Read all of the rest bytes until pixels
+    file_.read(buffer_, bufferLength_);
+    if(!file_) {
+        std::cerr << "Something went wrong" << std::endl;
+        return;
+    }
+    
+    numberOfPixels_ = info_.biWidth * info_.biHeight;
+    
+    pixels_ = new Pixel[numberOfPixels_];
+
+    file_.seekg(header_.dataOffset, std::ios::beg);
+
+    file_.read((char*) pixels_, numberOfPixels_ * sizeof(Pixel));
+    if(!file_) {
+        std::cerr << "Something went wrong" << std::endl;
+        return;
+    }
+    
+    file_.close();
+}
 
 void Bitmap::printHeader() {
-    std::cout << "==== BMP HEADER ====" << std::endl;
-    std::cout << "+ Signature  : " << signature_->data[0] << signature_->data[1] << std::endl;
-    std::cout << "+ File Size  : " << header_->fileSize << " byte(s)" << std::endl;
-    std::cout << "+ Reserved1  : " << header_->reserved1 << std::endl;
-    std::cout << "+ Reserved2  : " << header_->reserved2 << std::endl;
-    std::cout << "+ Data Offset: " << header_->dataOffset << " byte(s)" << std::endl;
+    std::cout << "**** Bitmap header info ****" << std::endl;
+    std::cout << "* Signature  : " << signature_.data[0] << signature_.data[1] << std::endl;
+    std::cout << "* File Size  : " << header_.fileSize << std::endl;
+    std::cout << "* Reserved1  : " << header_.reserved1 << std::endl;
+    std::cout << "* Reserved2  : " << header_.reserved2 << std::endl;
+    std::cout << "* Data Offset: " << header_.dataOffset << std::endl;
 
-    std::cout << "===== BMP INFO =====" << std::endl;
-    std::cout << "+ Size       : " << info_->biSize << std::endl;
-    std::cout << "+ Width      : " << info_->biWidth << std::endl;
-    std::cout << "+ Height     : " << info_->biHeight << std::endl;
-    
-    std::cout << "+ Planes     : " << info_->biPlanes << std::endl;
-    std::cout << "+ Bitcount   : " << info_->biBitCount << std::endl;   
+    std::cout << "* Size       : " << info_.biSize << std::endl;
+    std::cout << "* Width      : " << info_.biWidth << std::endl;
+    std::cout << "* Height     : " << info_.biHeight << std::endl;
+ 
+    std::cout << "* Planes     : " << info_.biPlanes << std::endl;
+    std::cout << "* Bitcount   : " << info_.biBitCount << std::endl;   
 }
 
-void Bitmap::readFile() {
-    if(!ifsBmp_)
+void Bitmap::write(const char* fname) {
+    if(!file_) {
         return;
-   
-    // Read header
-
-    ifsBmp_.seekg(0, std::ios::beg);
-    ifsBmp_.read((char*) signature_, sizeof(signature_));
-    ifsBmp_.read((char*) header_, sizeof(header_));
-    ifsBmp_.read((char*) info_, sizeof(info_));
+    }
     
-    std::cout << "+ Size       : " << info_->biSize << std::endl;
-    std::cout << "+ Width      : " << info_->biWidth << std::endl;
-    // Read all of the rest bytes between the header and the pixels
-    buffLength_ = header_->dataOffset - ifsBmp_.tellg();     
-
-    buffer_ = new char[24];
-
-    std::cout << "Helloooo!!";
-
-    ifsBmp_.read(buffer_, buffLength_);
-
-    // Read pixels
-    // this->pix_ = new Pixel**[height_][width_];
-
-
-
-    //allocate the array
-    pix_ = new Pixel*[getHeight()];
-    for(int i = 0; i < getHeight(); i++)
-        pix_[i] = new Pixel[getWidth()];
+    std::ofstream out(fname, std::ios::binary);
+    if (!out) {
+        std::cerr << "Error: cannot open file " << fname << std::endl;
+        return;
+    }
     
-    ifsBmp_.seekg(header_->dataOffset, std::ios::beg);
-    ifsBmp_.read((char*) &pix_, sizeof(pix_));
-
+    // Write header
+    out.write((char*) &signature_,  sizeof(signature_));
+    out.write((char*) &header_,     sizeof(header_));
+    out.write((char*) &info_,       sizeof(info_));
+    out.write((char*) buffer_,      bufferLength_);
+    if(!out) {
+        std::cerr << "Something went wrong" << std::endl;
+        return;
+    }
     
+    // Calculate number of bytes to be written for each row
+    size_t bytes = info_.biWidth * sizeof(Pixel);
+    
+    // Calculate padding for row
+    size_t paddingBytes = (bytes % 4) ? 4 - (bytes % 4) : 0;
+    
+    // Writing rows
+    for (size_t rowIndex = 0; rowIndex < info_.biHeight; ++rowIndex) {
+        out.write((char*) (pixels_ + info_.biWidth * rowIndex),  bytes);
+        if(!out) {
+            std::cerr << "Something went wrong" << std::endl;
+        }
+        
+        out.write("    ", paddingBytes);
 
+        if(!out) {
+            std::cerr << "Something went wrong" << std::endl;
+            return;
+        }
+    }
+    
 }
 
-void Bitmap::writeIcon(int x, int y, int iconWidth, int iconHeight, char* newFileName) {
+void Bitmap::resize(int positionX, int positionY, int width, int height) {   
+    if(!file_) {
+        return;
+    } 
 
-    std::ofstream ofsBmp;
-    ofsBmp.open(newFileName, std::ios::binary);
-    if(!ofsBmp) std::cerr << "Error opening the file" << std::endl;
+    if ( (positionX + width > info_.biWidth) || (positionY + height > info_.biHeight)) {
+        std::cerr << "Overflowing image size" << std::endl;
+        return;
+    }
 
-    std::cout << "Success!";    
+    // Allocate new buffer for the cropped image
+    size_t newPixelsSize = width * height;
+    Pixel* newPixels = new Pixel[newPixelsSize];
+    
+    size_t index = 0;
 
-    ofsBmp.write((char*) &signature_, sizeof(signature_));
-    // ofsBmp.write((char*) &header_, sizeof(header_));
+    // In order to change the (0,0) pixel to be the left one from the top, not from bottom
+    // positionY = info_.biHeight - positionY - height;
 
-    // resize(iconWidth, iconHeight);
-
-    // ofsBmp.write((char*) &info_, sizeof(info_));
-
-    // ofsBmp.write((char*) &buffer_, buffLength_);
-
-    // Write the selected pixels in the new file
-    // for(int i = x; i < iconHeight ; i++) {
-    //     for(int j = y; j < iconWidth; j++){
-    //         ofsBmp.write((char*) &pix_[i][j], sizeof(Pixel));
-    //     }
-    // }
-
-    ofsBmp.close();
+    for (int row = positionY; row < (positionY + height); ++row) {   
+        for (int col = positionX; col < (positionX + width); ++col) {        
+            newPixels[index++] = pixels_[row * info_.biWidth + col];
+        }
+    }
+    
+    // Write the new dimensions in the header
+    info_.biWidth = width;
+    info_.biHeight = height;
+    
+    // Free old buffer
+    delete [] pixels_;
+    
+    // Assagn the new one to the member
+    pixels_ = newPixels;
+    
+    numberOfPixels_ = newPixelsSize;
 }

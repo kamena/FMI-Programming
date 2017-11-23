@@ -1,55 +1,41 @@
-/*
+/* 
  * Kamena Dacheva, 71672
- * Homework 1
+ *
+ * Implementation for cropping BMP image files by reading from provided tdf file.
+ * All you have to do is provide a working and existing tdf file with valid commands.
+ * Ecample commands:
+ *
+ * ; Golden retriever thumbnail
+ * dogs.bmp (0, 0, 100, 200) retriever.bmp
+ * ; German shepherd thumbnail
+ * dogs.bmp (100, 0, 100, 200) shepherd.bmp
+ * ; Chihuahua thumbnail
+ * dogs.bmp (0, 200, 100, 200) chihuahua.bmp
  * 
  * OS used: Linux
  */
 
-
 #include <iostream>
-#include <fstream>
 #include <cstring>
-#include "Bitmap.cpp"
+#include <cstdlib>
+#include "Bitmap.h"
+#include "Tdf.h"
 
 using namespace std;
 
-const char bmpEx[5] = ".bmp";
+int main(int argc, char const *argv[]) {
+	if(argc == 1) {
+		cout << "You need to enter a tdf file!" << endl;
+		return 0;
+	}
 
+	if(!strstr(argv[1], ".tdf")) {
+		cerr << "The file should be .tdf" << endl;
+		return 0;
+	}
 
-int main(int argc, char** argv) {
-	ifstream ifs;
+    Tdf tdf(argv[1]);
+    tdf.readAndCrop();
 
-	Bitmap bitmap((char*)"dogs.bmp");
-
-	bitmap.printHeader();
-
-	// bitmap.writeIcon(0, 0, 200, 200, (char*)"test2.bmp");
-
-	// ifstream ifs;
-
- //    ifs.open("dogs.tdf");
- //    if (ifs.is_open()) {
- // 	// 	while (true) {
-	// 	//     char x;
-	// 	//     ifs >> x;
-	// 	//     if( ifs.eof() ) break;
-	// 	//     cout << x;
-	// 	// }
- //    	char buffer[1024];
- 
-	// 	while (ifs.getline(buffer, sizeof(buffer))) {
-	// 		char* output = NULL;
-	// 		if (buffer[0] != ';')
-	// 	    	cout << buffer << endl;
-	// 		    output = strstr (buffer, bmpEx);
-	// 			if(output) {
-	// 			    printf("String Found");
-	// 			}
-	// 	}
-	// } else {
-	// 	cerr << "Error opening the file!";
-	// }
-	// ifs.close();
-	
-	return 0;
+    return 0;
 }
