@@ -28,9 +28,23 @@ WHERE NETWORTH IN (SELECT MIN(NETWORTH) FROM MOVIEXEC)
 GROUP BY NAME
 
 ---------- 2018-09 -----------
+--1.--
 SELECT s.CLASS, MIN(Year(DATE)) AS FirstBattle, MAX(Year(DATE)) AS LastBattle, COUNT(DISTINCT b.NAME) AS TotalBattles
 FROM ships s
 LEFT JOIN outcomes o ON s.NAME = o.SHIP
 LEFT JOIN battles b ON b.NAME = o.BATTLE
 WHERE b.NAME LIKE 'N%'
 GROUP BY s.CLASS
+
+--2.--
+SELECT o.battle FROM outcomes o
+INNER JOIN ships s ON o.SHIP = s.NAME
+INNER JOIN classes c ON c.CLASS = s.CLASS
+WHERE c.TYPE = 'bb'
+GROUP BY o.BATTLE
+HAVING COUNT(o.ship) > (
+    SELECT COUNT(*) FROM outcomes o2
+    INNER JOIN ships s2 ON o2.SHIP = s2.NAME
+    INNER JOIN classes c2 ON c2.CLASS = s2.CLASS
+    WHERE c2.TYPE = 'bc' AND o.BATTLE = o2.BATTLE
+)
