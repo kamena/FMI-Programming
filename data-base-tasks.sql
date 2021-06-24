@@ -48,3 +48,13 @@ HAVING COUNT(o.ship) > (
     INNER JOIN classes c2 ON c2.CLASS = s2.CLASS
     WHERE c2.TYPE = 'bc' AND o.BATTLE = o2.BATTLE
 )
+
+---------- 2018-07 -----------
+--2--
+SELECT s.starname, MAX(s3.TotalMovies) FROM starsin s 
+JOIN (
+    SELECT s1.starname as starname, COUNT(s1.movietitle) as TotalMovies FROM starsin s1
+    JOIN moviestar m ON m.NAME = s1.STARNAME
+    WHERE m.GENDER = 'F'
+    GROUP BY STARNAME
+) s3 ON s3.starname = s.STARNAME
