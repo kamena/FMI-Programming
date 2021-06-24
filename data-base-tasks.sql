@@ -72,3 +72,18 @@ FROM ships s
 JOIN Classes c ON c.CLASS = s.CLASS
 LEFT JOIN outcomes o ON o.SHIP = s.NAME
 WHERE o.RESULT <> 'sunk' OR o.RESULT IS NULL
+
+--2--
+SELECT s.name, c.displacement, c.numguns FROM classes c
+JOIN ships s ON s.CLASS = c.CLASS
+WHERE displacement = (SELECT MIN(displacement) FROM classes)
+	AND numguns = (
+        SELECT MAX(numguns) FROM classes c1 WHERE c1.class = c.class
+    )
+
+--3--
+SELECT battle, ship FROM outcomes o1
+WHERE NOT EXISTS (
+    SELECT * FROM outcomes o2
+    WHERE o2.battle = o1.BATTLE AND o1.ship <> o2.ship
+)
