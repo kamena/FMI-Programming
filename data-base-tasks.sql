@@ -50,6 +50,11 @@ HAVING COUNT(o.ship) > (
 )
 
 ---------- 2018-07 -----------
+--1--
+SELECT s.name, MIN(m.year) AS FirstMovie, MAX(m.year) AS LastMovie, COUNT(m.title)
+FROM studio s 
+JOIN movie m ON m.STUDIONAME = s.NAME
+WHERE s.name LIKE 'M%'
 --2--
 SELECT s.starname, MAX(s3.TotalMovies) FROM starsin s 
 JOIN (
