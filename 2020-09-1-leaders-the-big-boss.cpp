@@ -7,7 +7,7 @@ bool is_sub (const char* employee, const char* manager, const char* leaders[][2]
     if (n == -1) return false;
     if (leaders[n][1] == manager && leaders[n][0] == employee) return true;
     if (leaders[n][1] == manager) {
-        return is_sub(employee, leaders[n+1][0], leaders, n-1);
+        return is_sub(employee, leaders[n][0], leaders, n-1);
     }
     return is_sub(employee, manager, leaders, n-1);
 };
