@@ -63,3 +63,12 @@ JOIN (
     WHERE m.GENDER = 'F'
     GROUP BY STARNAME
 ) s3 ON s3.starname = s.STARNAME
+
+
+---------- 2017-09-----------
+--1--
+SELECT DISTINCT s.name, c.country
+FROM ships s 
+JOIN Classes c ON c.CLASS = s.CLASS
+LEFT JOIN outcomes o ON o.SHIP = s.NAME
+WHERE o.RESULT <> 'sunk' OR o.RESULT IS NULL
