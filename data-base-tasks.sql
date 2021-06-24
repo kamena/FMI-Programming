@@ -8,8 +8,7 @@ JOIN MOVIE MON ME.CERT# = M.PRODUCERC#
 GROUP BY ME.CERT#, ME.NAME, M.YEAR;
 
 --2. Да се напише заявка, която да изведе името на най-младата звезда (полът е без значение)--
-SELECT NAME
-FROM moviestar
+SELECT NAME FROM moviestar
 WHERE BIRTHDATE IN (SELECT MAX(BIRTHDATE) FROM moviestar)
 GROUP BY NAME
 
@@ -21,3 +20,9 @@ SELECT S.NAME, COUNT(M.TITLE) as CNT
 FROM STUDIO S
 JOIN MOVIE MON S.NAME = M.STUDIONAME
 GROUP BY S.NAMEHAVING COUNT(M.TITLE) < 2;
+
+--2--
+--Да се напише заявка, която да изведе имената на всички продуценти с минимален нетен актив.--
+SELECT NAME FROM MOVIEEXEC
+WHERE NETWORTH IN (SELECT MIN(NETWORTH) FROM MOVIEXEC)
+GROUP BY NAME
