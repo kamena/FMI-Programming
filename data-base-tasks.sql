@@ -93,3 +93,9 @@ WHERE NOT EXISTS (
 SELECT m.studioname, m.title, m.year
 FROM movie m
 WHERE year = (SELECT MAX(year) FROM movie WHERE m.STUDIONAME = STUDIONAME)
+
+--2--
+SELECT me.name, SUM(m.length) FROM movieexec me 
+JOIN movie m ON m.`PRODUCERC#` = me.`CERT#`
+WHERE m.`PRODUCERC#` IN (SELECT `PRODUCERC#` FROM movie WHERE YEAR < 1980)
+GROUP BY me.name
