@@ -99,3 +99,12 @@ SELECT me.name, SUM(m.length) FROM movieexec me
 JOIN movie m ON m.`PRODUCERC#` = me.`CERT#`
 WHERE m.`PRODUCERC#` IN (SELECT `PRODUCERC#` FROM movie WHERE YEAR < 1980)
 GROUP BY me.name
+
+--3--
+SELECT st.starname, st.movietitle, name, networth 
+FROM starsin st
+JOIN movie m ON st.MOVIETITLE = m.TITLE AND st.MOVIEYEAR = m.YEAR
+JOIN (SELECT `CERT#`, name, NETWORTH
+      FROM movieexec
+      WHERE NETWORTH IN (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) me1
+      ON me1.name = name AND me1.networth = NETWORTH
