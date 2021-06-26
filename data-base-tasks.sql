@@ -87,3 +87,9 @@ WHERE NOT EXISTS (
     SELECT * FROM outcomes o2
     WHERE o2.battle = o1.BATTLE AND o1.ship <> o2.ship
 )
+
+---------- 2017-07-----------
+--1--
+SELECT m.studioname, m.title, m.year
+FROM movie m
+WHERE year = (SELECT MAX(year) FROM movie WHERE m.STUDIONAME = STUDIONAME)
