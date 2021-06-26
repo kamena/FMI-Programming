@@ -108,3 +108,10 @@ JOIN (SELECT `CERT#`, name, NETWORTH
       FROM movieexec
       WHERE NETWORTH IN (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) me1
       ON m.`PRODUCERC#` = me1.`CERT#`
+
+--4 B) --
+SELECT name, title, year
+FROM movie JOIN movieexec ON `producerc#`=`cert#`
+WHERE `cert#` = ANY (SELECT `producerc#`
+                     FROM movie
+                     WHERE title='Terms of Endearment')
