@@ -107,4 +107,4 @@ JOIN movie m ON st.MOVIETITLE = m.TITLE AND st.MOVIEYEAR = m.YEAR
 JOIN (SELECT `CERT#`, name, NETWORTH
       FROM movieexec
       WHERE NETWORTH IN (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) me1
-      ON me1.name = name AND me1.networth = NETWORTH
+      ON m.`PRODUCERC#` = me1.`CERT#`
