@@ -100,6 +100,11 @@ JOIN movie m ON m.`PRODUCERC#` = me.`CERT#`
 WHERE m.`PRODUCERC#` IN (SELECT `PRODUCERC#` FROM movie WHERE YEAR < 1980)
 GROUP BY me.name
 
+SELECT me.name, SUM(m.length) FROM movieexec me
+JOIN movie m ON m.`PRODUCERC#` = me.`CERT#`
+GROUP BY me.name
+HAVING MIN(m.year) < 1980
+
 --3--
 SELECT st.starname, st.movietitle, name, networth 
 FROM starsin st
