@@ -111,8 +111,8 @@ FROM starsin st
 JOIN movie m ON st.MOVIETITLE = m.TITLE AND st.MOVIEYEAR = m.YEAR
 JOIN (SELECT `CERT#`, name, NETWORTH
       FROM movieexec
-      WHERE NETWORTH IN (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) me1
-      ON m.`PRODUCERC#` = me1.`CERT#`
+      WHERE NETWORTH = (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) t
+      ON m.`PRODUCERC#` = t.`CERT#`
 
 --4 B) --
 SELECT name, title, year
