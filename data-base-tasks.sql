@@ -1,3 +1,11 @@
+---------- 2020-09 -----------
+--1--
+SELECT s.name, s.address
+FROM studio s JOIN movie m ON m.STUDIONAME = s.NAME
+WHERE m.INCOLOR = 'Y'
+GROUP BY s.name, s.ADDRESS
+HAVING s.name IN (SELECT studioname FROM movie WHERE incolor = 'N')
+
 ---------- 2019-09 -----------
 --1. Б)--
 -- Да се огради буквата на заявката, която извежда за всеки продуцент името му и броя на фил-мите му по години.--
