@@ -6,6 +6,13 @@ WHERE m.INCOLOR = 'Y'
 GROUP BY s.name, s.ADDRESS
 HAVING s.name IN (SELECT studioname FROM movie WHERE incolor = 'N')
 
+--2--
+SELECT s.name, s.address, AVG(m.length), COUNT(m.title)
+FROM Studio s 
+LEFT JOIN movie m ON m.STUDIONAME = s.NAME
+GROUP BY s.name, s.ADDRESS
+HAVING COUNT(*) <= 3
+
 ---------- 2019-09 -----------
 --1. Б)--
 -- Да се огради буквата на заявката, която извежда за всеки продуцент името му и броя на фил-мите му по години.--
