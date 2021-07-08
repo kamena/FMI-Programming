@@ -6,39 +6,29 @@ using namespace std;
 
 template<class T>
 class Sequence {
+private:
+    int curr_index = 0;
 protected:
-    T *curr;
-    int curr_index;
     vector<T> sequence;
-    int size;
 public:
     Sequence() {};
     Sequence(T a, T d, int n) {
-        this->createSequence(a, d, n);
-        curr = &sequence[0];
-        curr_index = 0;
-        size = n;
-    }
-    
-    void createSequence(T a, T d, int n) {
-       for (int i = 0; i <= n; i++) {
+        for (int i = 0; i <= n; i++) {
             sequence.push_back(a + i * d);
-        } 
+        }
     }
 
     T current() {
-        T current_to_return = *curr;
-        curr = &sequence[curr_index + 1];
-        return current_to_return;
+        return sequence[curr_index];
     }
 
     void next() {
-        if (curr_index == size) return;
+        if (last()) return;
         curr_index++;
     }
 
     bool last() {
-        return curr_index == size;
+        return curr_index == sequence.size() - 1;
     }
 };
 
@@ -49,9 +39,6 @@ public:
         for (int i = 0; i <= n; i++) {
             this->sequence.push_back(function(a + i * d));
         } 
-        this->curr = &this->sequence[0];
-        this->curr_index = 0;
-        this->size = n;
     }
 };
 
