@@ -70,6 +70,8 @@ SELECT s.name, MIN(m.year) AS FirstMovie, MAX(m.year) AS LastMovie, COUNT(m.titl
 FROM studio s 
 JOIN movie m ON m.STUDIONAME = s.NAME
 WHERE s.name LIKE 'M%'
+GROUP BY s.name
+
 --2--
 SELECT s.starname, MAX(s3.TotalMovies) FROM starsin s 
 JOIN (
