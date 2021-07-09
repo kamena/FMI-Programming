@@ -123,10 +123,8 @@ WHERE o.RESULT <> 'sunk' OR o.RESULT IS NULL
 --2--
 SELECT s.name, c.displacement, c.numguns FROM classes c
 JOIN ships s ON s.CLASS = c.CLASS
-WHERE displacement = (SELECT MIN(displacement) FROM classes)
-	AND numguns = (
-        SELECT MAX(numguns) FROM classes c1 WHERE c1.class = c.class
-    )
+WHERE displacement = (SELECT MIN(displacement) FROM classes) AND
+      numguns = (SELECT MAX(numguns) FROM classes c1 WHERE c1.class = c.class)
 
 --3--
 SELECT battle, ship FROM outcomes o1
