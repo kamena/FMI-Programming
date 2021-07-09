@@ -52,7 +52,8 @@ GROUP BY NAME
 SELECT S.NAME, COUNT(M.TITLE) as CNT
 FROM STUDIO S
 JOIN MOVIE MON S.NAME = M.STUDIONAME
-GROUP BY S.NAMEHAVING COUNT(M.TITLE) < 2;
+GROUP BY S.NAME
+HAVING COUNT(M.TITLE) < 2;
 
 --2--
 --Да се напише заявка, която да изведе имената на всички продуценти с минимален нетен актив.--
@@ -66,7 +67,7 @@ SELECT s.CLASS, MIN(Year(DATE)) AS FirstBattle, MAX(Year(DATE)) AS LastBattle, C
 FROM ships s
 LEFT JOIN outcomes o ON s.NAME = o.SHIP
 LEFT JOIN battles b ON b.NAME = o.BATTLE
-WHERE b.NAME LIKE 'N%'
+WHERE s.CLASS LIKE 'N%'
 GROUP BY s.CLASS
 
 --2.--
@@ -98,6 +99,17 @@ JOIN (
     WHERE m.GENDER = 'F'
     GROUP BY STARNAME
 ) s3 ON s3.starname = s.STARNAME
+
+--OR--
+SELECT starname, COUNT(st.MOVIETITLE) FROM moviestar ms
+JOIN starsin st ON ms.name = st.STARNAME
+WHERE ms.GENDER = 'F'
+GROUP BY starname
+HAVING COUNT(st.MOVIETITLE) >= ALL (SELECT COUNT(MOVIETITLE)
+                                    FROM moviestar
+                                    JOIN starsin ON name = STARNAME
+				    WHERE GENDER = 'F'
+                                    GROUP BY starname)
 
 
 ---------- 2017-09-----------
