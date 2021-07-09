@@ -13,6 +13,24 @@ LEFT JOIN movie m ON m.STUDIONAME = s.NAME
 GROUP BY s.name, s.ADDRESS
 HAVING COUNT(*) <= 3
 
+---------- 2020-08 -----------
+--1--
+SELECT name, birthdate, m.incolor FROM moviestar
+JOIN starsin st ON st.STARNAME = NAME
+JOIN movie m ON m.title = st.MOVIETITLE
+WHERE name NOT LIKE "%Jr.%"
+GROUP BY name, birthdate, m.INCOLOR
+HAVING m.INCOLOR = 'Y'
+ORDER BY BIRTHDATE DESC
+
+--2--
+SELECT name, YEAR(birthdate), COUNT(m.studioname) FROM moviestar
+LEFT JOIN starsin st ON st.STARNAME = name
+LEFT JOIN movie m ON m.title = st.movietitle
+WHERE GENDER = 'F'
+GROUP BY name, YEAR(birthdate)
+HAVING COUNT(m.title) <= 6
+
 ---------- 2019-09 -----------
 --1. Б)--
 -- Да се огради буквата на заявката, която извежда за всеки продуцент името му и броя на фил-мите му по години.--
