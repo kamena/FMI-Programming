@@ -133,6 +133,25 @@ WHERE NOT EXISTS (
     WHERE o2.battle = o1.BATTLE AND o1.ship <> o2.ship
 )
 
+--4--
+SELECT class, COUNT(DISTINCT name)
+FROM ships s 
+JOIN outcomes o ON s.name=o.ship
+WHERE result='sunk' AND class IN (SELECT c.class
+                                  FROM classes c 
+                                  JOIN ships s ON c.class=s.class
+                                  GROUP BY c.class
+                                  HAVING COUNT(name)>5)
+GROUP BY class
+
+--my 4--
+SELECT class, COUNT(DISTINCT name)
+FROM ships s 
+JOIN outcomes o ON s.name=o.ship
+WHERE result='sunk'
+GROUP BY class
+HAVING class IN (SELECT class FROM ships GROUP BY class HAVING COUNT(name) > 5)
+
 ---------- 2017-07-----------
 --1--
 SELECT m.studioname, m.title, m.year
