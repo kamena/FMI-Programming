@@ -175,8 +175,15 @@ FROM starsin st
 JOIN movie m ON st.MOVIETITLE = m.TITLE AND st.MOVIEYEAR = m.YEAR
 JOIN (SELECT `CERT#`, name, NETWORTH
       FROM movieexec
-      WHERE NETWORTH = (SELECT MAX(NETWORTH) FROM movieexec me2 WHERE me2.NAME = NAME)) t
+      WHERE NETWORTH = (SELECT MAX(NETWORTH) FROM movieexec me2)) t
       ON m.`PRODUCERC#` = t.`CERT#`
+
+--my 3--
+SELECT st.STARNAME, m.title, me.name, me.networth
+FROM starsin st
+JOIN movie m ON m.TITLE = st.MOVIETITLE
+JOIN movieexec me ON me.`CERT#` = m.`PRODUCERC#`
+WHERE me.NETWORTH IN (SELECT MAX(NETWORTH) FROM movieexec)
 
 --4 B) --
 SELECT name, title, year
@@ -184,3 +191,29 @@ FROM movie JOIN movieexec ON `producerc#`=`cert#`
 WHERE `cert#` = ANY (SELECT `producerc#`
                      FROM movie
                      WHERE title='Terms of Endearment')
+		
+---------- 2016-09-----------
+--1--
+SELECT DISTINCT c.country, (SELECT COUNT(o.result)
+                            FROM classes c1
+                            JOIN ships s ON c1.class=s.class
+                            JOIN outcomes o ON s.name=o.ship
+                            WHERE result='sunk' AND c1.country=c.country)
+FROM classes c
+
+--my 1--
+SELECT DISTINCT c.country, COUNT(t.numSunk)
+FROM classes c
+LEFT JOIN ( 
+    SELECT c1.COUNTRY, COUNT(o.result) as numSunk
+    FROM classes c1
+    JOIN ships s ON c1.class=s.class
+    JOIN outcomes o ON s.name=o.ship
+    WHERE result='sunk') t ON t.Country = c.COUNTRY
+GROUP BY COUNTRY
+
+--my 2--
+SELECT battle, ship FROM outcomes o
+GROUP BY BATTLE
+HAVING COUNT(ship) > (SELECT COUNT(ship) FROM outcomes WHERE battle="North Cape")
+
