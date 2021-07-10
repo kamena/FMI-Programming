@@ -234,3 +234,19 @@ HAVING COUNT(st.STARNAME) >= ALL (SELECT COUNT(starname)
                               FROM starsin
                               JOIN movie ON title = MOVIETITLE
                               GROUP BY STUDIONAME, starname)
+			      
+---------- 2014-09-----------
+--1--
+SELECT s.name FROM ships s
+LEFT JOIN outcomes o ON o.SHIP = s.NAME
+LEFT JOIN battles b ON b.NAME = o.BATTLE
+WHERE s.LAUNCHED IN (SELECT date FROM battles)
+
+--2--
+SELECT c.country, COUNT(sunkShips) FROM classes c 
+LEFT JOIN (SELECT c1.country, COUNT(ship) as sunkShips FROM classes c1
+           JOIN ships s1 ON c1.class = s1.class
+           JOIN outcomes o1 ON s1.name = o1.ship
+           WHERE result = 'sunk') t 
+      ON t.country = c.country
+GROUP BY country
