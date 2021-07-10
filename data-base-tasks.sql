@@ -217,3 +217,20 @@ SELECT battle, ship FROM outcomes o
 GROUP BY BATTLE
 HAVING COUNT(ship) > (SELECT COUNT(ship) FROM outcomes WHERE battle="North Cape")
 
+---------- 2016-07-----------
+--my 1--
+SELECT me.name, m.title FROM movieexec me
+JOIN movie m ON m.`PRODUCERC#` = me.`CERT#`
+WHERE m.`PRODUCERC#` IN (SELECT `PRODUCERC#`
+                         FROM movie 
+                         WHERE title = 'Pretty Woman')
+			 
+--my 2--
+SELECT m.STUDIONAME, st.starname, COUNT(st.starname) AS CountFilms
+FROM starsin st
+JOIN movie m ON m.title = st.MOVIETITLE
+GROUP BY STUDIONAME, starname
+HAVING COUNT(st.STARNAME) >= ALL (SELECT COUNT(starname)
+                              FROM starsin
+                              JOIN movie ON title = MOVIETITLE
+                              GROUP BY STUDIONAME, starname)
