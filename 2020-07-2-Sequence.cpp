@@ -8,27 +8,30 @@ template<class T>
 class Sequence {
 private:
     int curr_index = 0;
-protected:
     vector<T> sequence;
 public:
     Sequence() {};
     Sequence(T a, T d, int n) {
         for (int i = 0; i <= n; i++) {
-            sequence.push_back(a + i * d);
+            this->push_to_sequence(a + i * d);
         }
     }
 
     T current() {
-        return sequence[curr_index];
+        return this->sequence[curr_index];
     }
 
     void next() {
-        if (last()) return;
-        curr_index++;
+        if (this->last()) return;
+        this->curr_index++;
     }
 
     bool last() {
-        return curr_index == sequence.size() - 1;
+        return this->curr_index == this->sequence.size() - 1;
+    }
+    
+    void push_to_sequence(T item) {
+        this->sequence.push_back(item);
     }
 };
 
@@ -37,7 +40,7 @@ class MappedSequence : public Sequence<T> {
 public:
     MappedSequence(T a, T d, int n, int (*function)(int)) {
         for (int i = 0; i <= n; i++) {
-            this->sequence.push_back(function(a + i * d));
+            this->push_to_sequence(function(a + i * d));
         } 
     }
 };
