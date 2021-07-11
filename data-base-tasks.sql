@@ -21,10 +21,10 @@ JOIN movie m ON m.title = st.MOVIETITLE
 WHERE name NOT LIKE "%Jr.%"
 GROUP BY name, birthdate, m.INCOLOR
 HAVING m.INCOLOR = 'Y'
-ORDER BY BIRTHDATE DESC
+ORDER BY BIRTHDATE DESC, NAME ASC
 
 --2--
-SELECT name, YEAR(birthdate), COUNT(m.studioname) FROM moviestar
+SELECT name, YEAR(birthdate), COUNT(DISTINCT m.studioname) FROM moviestar
 LEFT JOIN starsin st ON st.STARNAME = name
 LEFT JOIN movie m ON m.title = st.movietitle
 WHERE GENDER = 'F'
